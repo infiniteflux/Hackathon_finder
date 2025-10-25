@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.hackathon_finder.AppRoutes
 import com.example.hackathon_finder.R
 import com.example.hackathon_finder.bottomNavigation.AppBottomNavigation
 import com.example.hackathon_finder.viewModel.HomeViewModel
@@ -80,7 +81,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.weight(0.5f))
 
             Button(
-                onClick = { HomeViewModel.onStartExploringClicked() },
+                onClick = {navController.navigate(AppRoutes.HACKATHON)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),

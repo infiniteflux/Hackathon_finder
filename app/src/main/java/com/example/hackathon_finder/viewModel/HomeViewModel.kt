@@ -28,7 +28,7 @@ class HomeViewModel : ViewModel() {
      * You would typically trigger navigation or another business logic event here.
      */
     fun onStartExploringClicked() {
-        // TODO: Implement navigation to the main explore screen
+
         println("Start Exploring Clicked!")
     }
 }
