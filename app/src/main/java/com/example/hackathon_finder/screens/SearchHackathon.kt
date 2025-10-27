@@ -1,7 +1,5 @@
 package com.example.hackathon_finder.screens
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +14,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Public
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -42,43 +41,51 @@ fun SearchHackathon(
     navController: NavController,
     hackathonViewModel: HackathonViewModel = viewModel()
 ) {
-    // State for the text fields
     var topic by rememberSaveable { mutableStateOf("") }
     var technology by rememberSaveable { mutableStateOf("") }
     var prize by rememberSaveable { mutableStateOf("") }
-    var country by rememberSaveable { mutableStateOf("") } // <-- ADDED COUNTRY STATE
+    var country by rememberSaveable { mutableStateOf("") }
 
-    // UI state from the ViewModel
     val uiState by hackathonViewModel.uiState.collectAsState()
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchAction = {
         keyboardController?.hide()
-        // Pass the API key securely. For this example, it's hardcoded.
-        // !! IMPORTANT: For a real app, never hardcode API keys.
-        val apiKey = "ddc-a4f-724ed5dff6bb4ec6947cf65b923f742e" // <-- REPLACE WITH YOUR KEY
-        // --- UPDATED VIEWMODEL CALL ---
+        val apiKey = "AIzaSyCwZGNnKo7f60v6PYp1MfNeYi1RkL9ca14"
         hackathonViewModel.findHackathons(topic, technology, prize, country, apiKey)
     }
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Search Hackathons") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        },
-        containerColor = Color(0xFFF0F4F8) // Light background
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Column {
+                    Text(
+                        text = "Search Hackathons",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+        }
+        ,
+        containerColor = Color(0xFFF0F4F8)
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -86,7 +93,6 @@ fun SearchHackathon(
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            // --- Input Fields ---
             HackathonTextField(
                 value = topic,
                 onValueChange = { topic = it },
@@ -105,11 +111,11 @@ fun SearchHackathon(
                 value = prize,
                 onValueChange = { prize = it },
                 label = "Prize Pool (e.g., > $1000, any)",
-                imeAction = ImeAction.Next // <-- CHANGED
+                imeAction = ImeAction.Next
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            // --- NEW COUNTRY FIELD ---
+
             HackathonTextField(
                 value = country,
                 onValueChange = { country = it },
@@ -117,11 +123,9 @@ fun SearchHackathon(
                 imeAction = ImeAction.Search,
                 onSearch = searchAction
             )
-            // --- END NEW FIELD ---
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- Search Button ---
             Button(
                 onClick = searchAction,
                 modifier = Modifier
@@ -131,10 +135,9 @@ fun SearchHackathon(
             ) {
                 Text("Search", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
-// ... rest of the file is unchanged ...
+
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- Results Area ---
             Box(modifier = Modifier.fillMaxSize()) {
                 when {
                     uiState.isLoading -> {
@@ -153,12 +156,9 @@ fun SearchHackathon(
                         ) {
                             items(uiState.hackathons) { hackathon ->
                                 HackathonCard(hackathon = hackathon, onClick = {
-                                    // --- THIS IS THE CHANGE ---
-                                    // Navigate to the WebView instead of opening Chrome
                                     if (hackathon.url.isNotBlank()) {
                                         navController.navigate(AppRoutes.getWebViewRoute(hackathon.url))
                                     }
-                                    // --- END OF CHANGE ---
                                 })
                             }
                         }
@@ -202,7 +202,7 @@ private fun HackathonTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit) {
+fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit,onFavoriteClick: () -> Unit = {} ) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -212,12 +212,29 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit) {
         onClick = onClick
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = hackathon.name,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = hackathon.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(onClick = onFavoriteClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = hackathon.description,
@@ -227,7 +244,6 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- NEW: Mode and Location ---
             InfoRow(
                 icon = if (hackathon.mode.equals("Online", ignoreCase = true))
                     Icons.Default.Computer
@@ -236,7 +252,6 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit) {
                 text = "${hackathon.mode} - ${hackathon.location}"
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // --- END NEW ---
 
             InfoRow(
                 icon = Icons.Default.CalendarMonth,

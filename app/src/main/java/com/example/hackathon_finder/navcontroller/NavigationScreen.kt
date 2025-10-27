@@ -37,21 +37,17 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                     SearchHackathon(navController = navController , hackathonViewModel = hackathonViewModel)
                 }
 
-                // --- THIS IS THE FIX ---
-                // Add the new destination for the WebView
                 composable(
                     route = AppRoutes.WEBVIEW_ROUTE,
                     arguments = listOf(navArgument(AppRoutes.WEBVIEW_URL_ARG) {
                         type = NavType.StringType
                     })
                 ) { backStackEntry ->
-                    // Retrieve the encoded URL from the navigation arguments
                     val encodedUrl = backStackEntry.arguments?.getString(AppRoutes.WEBVIEW_URL_ARG)
-
-                    // Show the WebView screen
                     HackathonWebViewScreen(
                         encodedUrl = encodedUrl,
-                        onBack = { navController.popBackStack() }
+                        onBack = { navController.popBackStack() },
+                        navController = navController
                     )
                 }
             }
