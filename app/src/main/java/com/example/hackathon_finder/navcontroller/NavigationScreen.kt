@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackathon_finder.AppRoutes
+import com.example.hackathon_finder.screens.FavouriteScreen
 import com.example.hackathon_finder.screens.HackathonWebViewScreen
 import com.example.hackathon_finder.screens.HomeScreen
 import com.example.hackathon_finder.screens.SearchHackathon
@@ -54,7 +55,7 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                 }
 
                 composable (AppRoutes.FAVOURITE){
-
+                    FavouriteScreen(navController = navController, favouriteViewModel = favouriteViewModel)
                 }
             }
         }
