@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hackathon_finder.navcontroller.NavigationScreen
 import com.example.hackathon_finder.ui.theme.Hackathon_finderTheme
+import com.example.hackathon_finder.viewModel.FavouriteViewModel
 import com.example.hackathon_finder.viewModel.HackathonViewModel
 import com.example.hackathon_finder.viewModel.HomeViewModel
 import java.net.URLEncoder
@@ -22,6 +23,7 @@ object AppRoutes {
         val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
         return "$WEBVIEW_SCREEN?$WEBVIEW_URL_ARG=$encodedUrl"
     }
+    const val FAVOURITE ="Favourite"
 }
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +33,11 @@ class MainActivity : ComponentActivity() {
             Hackathon_finderTheme {
                 val homeViewModel: HomeViewModel = viewModel()
                 val hackathonViewModel: HackathonViewModel = viewModel()
+                val favouriteViewModel: FavouriteViewModel = viewModel ()
                 NavigationScreen(
                     homeViewModel = homeViewModel,
-                    hackathonViewModel = hackathonViewModel
+                    hackathonViewModel = hackathonViewModel,
+                    favouriteViewModel = favouriteViewModel
                 )
             }
         }

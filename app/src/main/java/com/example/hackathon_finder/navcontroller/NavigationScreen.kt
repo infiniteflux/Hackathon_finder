@@ -14,13 +14,15 @@ import com.example.hackathon_finder.AppRoutes
 import com.example.hackathon_finder.screens.HackathonWebViewScreen
 import com.example.hackathon_finder.screens.HomeScreen
 import com.example.hackathon_finder.screens.SearchHackathon
+import com.example.hackathon_finder.viewModel.FavouriteViewModel
 import com.example.hackathon_finder.viewModel.HackathonViewModel
 import com.example.hackathon_finder.viewModel.HomeViewModel
 
 @Composable
 fun NavigationScreen(modifier: Modifier = Modifier,
                      homeViewModel: HomeViewModel,
-                     hackathonViewModel: HackathonViewModel
+                     hackathonViewModel: HackathonViewModel,
+                     favouriteViewModel: FavouriteViewModel
 ) {
     val navController = rememberNavController()
     Scaffold(modifier = modifier) { innerPadding ->
@@ -49,6 +51,10 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                         onBack = { navController.popBackStack() },
                         navController = navController
                     )
+                }
+
+                composable (AppRoutes.FAVOURITE){
+
                 }
             }
         }

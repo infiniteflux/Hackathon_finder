@@ -176,6 +176,7 @@ fun SearchHackathon(
             }
         }
     }
+
 }
 
 @Composable
