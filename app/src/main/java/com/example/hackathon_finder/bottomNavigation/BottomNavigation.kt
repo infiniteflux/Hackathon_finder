@@ -3,40 +3,47 @@ package com.example.hackathon_finder.bottomNavigation
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.hackathon_finder.data.BottomNavItem
 import com.example.hackathon_finder.screens.BrightBlue
 import com.example.hackathon_finder.screens.DarkNavy
 import com.example.hackathon_finder.screens.TextGray
 
 @Composable
-fun AppBottomNavigation(
-    selectedItemIndex: Int,
-    onItemSelected: (Int) -> Unit
-) {
+fun AppBottomNavigation(navController: NavController) {
     val items = listOf(
-        BottomNavItem("Explore", Icons.Default.Search),
-        BottomNavItem("Favorites", Icons.Default.Favorite),
-        BottomNavItem("Profile", Icons.Default.Person)
+        BottomNavItem("Home", Icons.Default.Home, "Home"),
+        BottomNavItem("Favorites", Icons.Default.Favorite, "Favourite"),
+        BottomNavItem("Profile", Icons.Default.Person, "profile")
     )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationBar(
         containerColor = DarkNavy,
         contentColor = BrightBlue
     ) {
-        items.forEachIndexed { index, item ->
+        items.forEach { item ->
             NavigationBarItem(
-                selected = selectedItemIndex == index,
-                onClick = { onItemSelected(index) },
+                selected = currentRoute == item.route,
+                onClick = {
+                    if (currentRoute != item.route) {
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    }
+                },
                 label = { Text(item.label) },
                 icon = {
                     Icon(

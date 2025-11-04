@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackathon_finder.AppRoutes
+import com.example.hackathon_finder.bottomNavigation.AppBottomNavigation
 import com.example.hackathon_finder.screens.FavouriteScreen
 import com.example.hackathon_finder.screens.HackathonWebViewScreen
 import com.example.hackathon_finder.screens.HomeScreen
@@ -26,7 +27,12 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                      favouriteViewModel: FavouriteViewModel
 ) {
     val navController = rememberNavController()
-    Scaffold(modifier = modifier) { innerPadding ->
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {
+            AppBottomNavigation(navController = navController)
+        })
+    { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(
                 navController = navController,

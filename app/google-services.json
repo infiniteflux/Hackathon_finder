@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019059985577",
+    "project_id": "hackathonfidnerapp",
+    "storage_bucket": "hackathonfidnerapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019059985577:android:fbea6c7a10d97c47725db8",
+        "android_client_info": {
+          "package_name": "com.example.hackathon_finder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdMmG8koz-Wv2YMQFsGUe-CPX_6AFOPZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

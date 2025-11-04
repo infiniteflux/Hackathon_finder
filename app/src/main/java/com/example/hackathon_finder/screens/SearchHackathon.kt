@@ -12,6 +12,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -48,7 +49,6 @@ fun SearchHackathon(
     var country by rememberSaveable { mutableStateOf("") }
 
     val uiState by hackathonViewModel.uiState.collectAsState()
-    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchAction = {
@@ -230,17 +230,31 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel:
                     modifier = Modifier.weight(1f)
                 )
 
+               // Check once when composable loads
+                val isFavourite = remember { mutableStateOf(false) }
+                LaunchedEffect(Unit) {
+                    favouriteViewModel.isHackathonExist(hackathon) {
+                        isFavourite.value = it
+                    }
+                }
+
                 IconButton(
                     onClick = {
-                        favouriteViewModel.saveHackathon()
+                        if (isFavourite.value) {
+                            favouriteViewModel.deleteHackathon(hackathon)
+                        } else {
+                            favouriteViewModel.saveHackathon(hackathon)
+                        }
+                        isFavourite.value = !isFavourite.value
                     }
-                ){
+                ) {
                     Icon(
-                        imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.primary
+                        imageVector = if (isFavourite.value) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = if (isFavourite.value) "Unfavorite" else "Favorite",
+                        tint = if (isFavourite.value) Color.Red else MaterialTheme.colorScheme.primary
                     )
                 }
+
             }
 
             Spacer(modifier = Modifier.height(8.dp))
