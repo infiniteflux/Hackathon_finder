@@ -99,7 +99,7 @@ fun HackathonWebViewScreen(
                     // Create the WebView instance
                     WebView(context).apply {
                         // Configure the WebView
-                        settings.javaScriptEnabled = true // Enable JavaScript
+                        settings.javaScriptEnabled = true
                         webViewClient = object : WebViewClient() {
                             // Track loading state
                             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
