@@ -29,17 +29,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.hackathon_finder.AppRoutes
 import com.example.hackathon_finder.data.Hackathon
+import com.example.hackathon_finder.viewModel.FavouriteViewModel
 import com.example.hackathon_finder.viewModel.HackathonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchHackathon(
     navController: NavController,
-    hackathonViewModel: HackathonViewModel = viewModel()
+    hackathonViewModel: HackathonViewModel,
+    favouriteViewModel: FavouriteViewModel
 ) {
     var topic by rememberSaveable { mutableStateOf("") }
     var technology by rememberSaveable { mutableStateOf("") }
@@ -155,7 +156,9 @@ fun SearchHackathon(
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(uiState.hackathons) { hackathon ->
-                                HackathonCard(hackathon = hackathon, onClick = {
+                                HackathonCard(hackathon = hackathon,
+                                    favouriteViewModel = favouriteViewModel,
+                                    onClick = {
                                     if (hackathon.url.isNotBlank()) {
                                         navController.navigate(AppRoutes.getWebViewRoute(hackathon.url))
                                     }
@@ -203,7 +206,7 @@ private fun HackathonTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit,onFavoriteClick: () -> Unit = {} ) {
+fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel: FavouriteViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -227,7 +230,11 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit,onFavoriteClick: () 
                     modifier = Modifier.weight(1f)
                 )
 
-                IconButton(onClick = onFavoriteClick) {
+                IconButton(
+                    onClick = {
+                        favouriteViewModel.saveHackathon()
+                    }
+                ){
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite",

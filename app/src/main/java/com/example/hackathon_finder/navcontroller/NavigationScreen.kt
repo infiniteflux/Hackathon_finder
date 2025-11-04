@@ -37,7 +37,7 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                 }
 
                 composable (AppRoutes.HACKATHON){
-                    SearchHackathon(navController = navController , hackathonViewModel = hackathonViewModel)
+                    SearchHackathon(navController = navController , hackathonViewModel = hackathonViewModel, favouriteViewModel= favouriteViewModel)
                 }
 
                 composable(
