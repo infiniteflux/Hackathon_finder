@@ -1,6 +1,5 @@
 package com.example.hackathon_finder.viewModel
 
-import androidx.compose.animation.core.snap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackathon_finder.data.Hackathon

@@ -18,19 +18,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.hackathon_finder.AppRoutes
 import com.example.hackathon_finder.R
-import com.example.hackathon_finder.viewModel.HomeViewModel
+
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    HomeViewModel: HomeViewModel
 ) {
-    val uiState by HomeViewModel.uiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,5 +92,5 @@ val TextGray @Composable get() = colorResource(id = R.color.text_gray)
 @Preview(showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController(), HomeViewModel = viewModel ())
+    HomeScreen(navController = rememberNavController())
 }

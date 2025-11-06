@@ -2,10 +2,11 @@ package com.example.hackathon_finder.bottomNavigation
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +24,7 @@ fun AppBottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem("Home", Icons.Default.Home, "Home"),
         BottomNavItem("Favorites", Icons.Default.Favorite, "Favourite"),
-        BottomNavItem("Profile", Icons.Default.Person, "profile")
+        BottomNavItem("ChatBot", Icons.AutoMirrored.Filled.Chat, "ChatBot")
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

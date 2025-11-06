@@ -12,19 +12,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackathon_finder.AppRoutes
 import com.example.hackathon_finder.bottomNavigation.AppBottomNavigation
+import com.example.hackathon_finder.screens.ChatBotScreen
 import com.example.hackathon_finder.screens.FavouriteScreen
 import com.example.hackathon_finder.screens.HackathonWebViewScreen
 import com.example.hackathon_finder.screens.HomeScreen
 import com.example.hackathon_finder.screens.SearchHackathon
+import com.example.hackathon_finder.viewModel.ChatBotViewModel
 import com.example.hackathon_finder.viewModel.FavouriteViewModel
 import com.example.hackathon_finder.viewModel.HackathonViewModel
-import com.example.hackathon_finder.viewModel.HomeViewModel
 
 @Composable
 fun NavigationScreen(modifier: Modifier = Modifier,
-                     homeViewModel: HomeViewModel,
                      hackathonViewModel: HackathonViewModel,
-                     favouriteViewModel: FavouriteViewModel
+                     favouriteViewModel: FavouriteViewModel,
+                     chatBotViewModel: ChatBotViewModel
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -39,7 +40,7 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                 startDestination = AppRoutes.HOME
             ) {
                 composable(AppRoutes.HOME){
-                    HomeScreen(navController =navController , HomeViewModel = homeViewModel)
+                    HomeScreen(navController =navController)
                 }
 
                 composable (AppRoutes.HACKATHON){
@@ -62,6 +63,10 @@ fun NavigationScreen(modifier: Modifier = Modifier,
 
                 composable (AppRoutes.FAVOURITE){
                     FavouriteScreen(navController = navController, favouriteViewModel = favouriteViewModel)
+                }
+
+                composable(AppRoutes.CHATBOT) {
+                    ChatBotScreen(chatBotViewModel=chatBotViewModel)
                 }
             }
         }

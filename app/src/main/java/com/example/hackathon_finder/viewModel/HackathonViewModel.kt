@@ -25,7 +25,6 @@ class HackathonViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HackathonUiState())
     val uiState = _uiState.asStateFlow()
 
-    // Increase the timeout to 60 seconds for complex AI searches
     private val client = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
@@ -52,7 +51,6 @@ class HackathonViewModel : ViewModel() {
                 val requestBody = createRequestBody(topic, technology, prize, country)
                 val request = createRequest(apiKey, requestBody)
 
-                // Run network call on background thread
                 val (responseCode, responseBody, fullError) = withContext(Dispatchers.IO) {
                     try {
                         val response = client.newCall(request).execute()
@@ -65,7 +63,7 @@ class HackathonViewModel : ViewModel() {
                             val errorMsg = try {
                                 JSONObject(errorBody).getJSONObject("error").getString("message")
                             } catch (e: Exception) {
-                                errorBody // Fallback to raw error body
+                                errorBody
                             }
                             Triple(response.code, null, "API Error: ${response.code} $errorMsg")
                         }
@@ -74,23 +72,18 @@ class HackathonViewModel : ViewModel() {
                     }
                 }
 
-                // Process the result back on the main thread
                 if (responseBody != null) {
                     val hackathons = parseResponse(responseBody)
                     if (hackathons.isEmpty() && _uiState.value.error == null) {
-                        // If parsing returned no valid hackathons, show this message.
                         _uiState.update { it.copy(isLoading = false, error = "No hackathons found matching your criteria.") }
                     } else {
-                        // We have valid hackathons, show them.
                         _uiState.update { it.copy(isLoading = false, hackathons = hackathons) }
                     }
                 } else {
-                    // Show the API error (e.g., 400, 403, 500)
                     _uiState.update { it.copy(isLoading = false, error = fullError) }
                 }
 
             } catch (e: Exception) {
-                // This catches errors from parsing (e.g., "Failed to parse...")
                 _uiState.update {
                     it.copy(isLoading = false, error = e.message ?: "An unknown error occurred.")
                 }
@@ -104,11 +97,10 @@ class HackathonViewModel : ViewModel() {
         prize: String,
         country: String
     ): String {
-        // 1. Get current date
+
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        // 2. Build the dynamic query based on user input
-        val queryParts = mutableListOf<String>("upcoming hackathons") // Base search query
+        val queryParts = mutableListOf<String>("upcoming hackathons")
         if (topic.isNotBlank()) queryParts.add(topic)
         if (technology.isNotBlank()) queryParts.add(technology)
         if (country.isNotBlank()) {
@@ -116,10 +108,10 @@ class HackathonViewModel : ViewModel() {
         }
         if (prize.isNotBlank()) queryParts.add("with prize pool over $prize")
 
-        // This is the prompt for the *user's* request
+
         val userPrompt = queryParts.joinToString(" ")
 
-        // This is the "system instruction" that tells the AI *how* to behave.
+
         val systemInstruction = """
         You are a hackathon finder assistant. The user will provide a query.
         You MUST use the Google Search tool to find live, real-world hackathons that match the user's query.
@@ -137,22 +129,17 @@ class HackathonViewModel : ViewModel() {
         """.trimIndent()
 
 
-        // 4. Create the Gemini JSON Request Body
         val root = JSONObject()
-
-        // Add contents with user prompt
         val contents = JSONArray()
         val parts = JSONArray()
         parts.put(JSONObject().put("text", userPrompt))
         contents.put(JSONObject().put("parts", parts))
         root.put("contents", contents)
 
-        // Add system instruction
         val systemInstructionJson = JSONObject()
         systemInstructionJson.put("parts", JSONArray().put(JSONObject().put("text", systemInstruction)))
         root.put("systemInstruction", systemInstructionJson)
 
-        // Add the Google Search tool
         val tools = JSONArray()
         tools.put(JSONObject().put("google_search", JSONObject()))
         root.put("tools", tools)
@@ -171,7 +158,6 @@ class HackathonViewModel : ViewModel() {
 
     private fun parseResponse(responseBody: String): List<Hackathon> {
         return try {
-            // The JSON array is inside the text of the first candidate
             val mainResponse = JSONObject(responseBody)
             val text = mainResponse
                 .getJSONArray("candidates")
@@ -181,16 +167,11 @@ class HackathonViewModel : ViewModel() {
                 .getJSONObject(0)
                 .getString("text")
 
-            // Clean the text in case the AI adds markdown or other artifacts
-            // This is now more robust. It finds the first '[' and the last ']'
             val startIndex = text.indexOfFirst { it == '[' }
             val endIndex = text.indexOfLast { it == ']' }
 
             if (startIndex == -1 || endIndex == -1 || endIndex < startIndex) {
-                // AI failed to return a JSON array at all.
-                // Check if the response might be a simple "no results" message.
                 if (text.contains("no hackathons", ignoreCase = true) || text.contains("couldn't find", ignoreCase = true)) {
-                    // This is not an error, it's a valid "no results" response.
                     return emptyList()
                 }
                 throw Exception("No valid JSON array found in AI response. Raw text: $text")
@@ -203,16 +184,10 @@ class HackathonViewModel : ViewModel() {
             for (i in 0 until hackathonArray.length()) {
                 val h = hackathonArray.getJSONObject(i)
 
-                // **NEW ROBUST PARSING**
-                // 1. Get the strict fields. Use "" as default if missing.
                 val name = h.optString("name", "")
                 val url = h.optString("url", "")
 
-                // 2. **STRICT CHECK:** Only add hackathon if name and URL are valid.
-                // This filters out any junk results from the AI.
                 if (name.isNotBlank() && url.isNotBlank()) {
-                    // 3. Add the hackathon with flexible fields.
-                    // This will not crash if fields are missing.
                     hackathons.add(
                         Hackathon(
                             name = name,
@@ -226,12 +201,10 @@ class HackathonViewModel : ViewModel() {
                         )
                     )
                 }
-                // If name or url were blank, we simply ignore this entry and continue.
             }
 
             hackathons
         } catch (e: Exception) {
-            // If parsing fails here, the AI failed to follow instructions
             throw Exception("Failed to parse AI's JSON response. Raw: $responseBody")
         }
     }
