@@ -66,7 +66,8 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                 }
 
                 composable(AppRoutes.CHATBOT) {
-                    ChatBotScreen(chatBotViewModel=chatBotViewModel)
+                    ChatBotScreen(chatBotViewModel=chatBotViewModel,
+                        navController = navController)
                 }
             }
         }

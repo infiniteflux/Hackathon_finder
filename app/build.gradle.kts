@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,9 +20,29 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+    buildFeatures {
+        buildConfig = true
+    }
 
     buildTypes {
-        release {
+        getByName("debug") {
+            buildConfigField(
+                "String",
+                "GEMINI_API_KEY",
+                "\"${localProperties.getProperty("GEMINI_API_KEY") ?: ""}\""
+            )
+        }
+        getByName("release") {
+            buildConfigField(
+                "String",
+                "GEMINI_API_KEY",
+                "\"${localProperties.getProperty("GEMINI_API_KEY") ?: ""}\""
+            )
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -64,4 +86,7 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-firestore")
+
+    // gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hackathon_finder.AppRoutes
+import com.example.hackathon_finder.BuildConfig
 import com.example.hackathon_finder.data.Hackathon
 import com.example.hackathon_finder.viewModel.FavouriteViewModel
 import com.example.hackathon_finder.viewModel.HackathonViewModel
@@ -46,13 +47,14 @@ fun SearchHackathon(
     var technology by rememberSaveable { mutableStateOf("") }
     var prize by rememberSaveable { mutableStateOf("") }
     var country by rememberSaveable { mutableStateOf("") }
+    val apiKey = BuildConfig.GEMINI_API_KEY
 
     val uiState by hackathonViewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchAction = {
         keyboardController?.hide()
-        val apiKey = "AIzaSyCwZGNnKo7f60v6PYp1MfNeYi1RkL9ca14"
+        val apiKey = apiKey
         hackathonViewModel.findHackathons(topic, technology, prize, country, apiKey)
     }
 
