@@ -1,6 +1,4 @@
 package com.example.hackathon_finder.screens
-
-import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

@@ -91,9 +91,9 @@ fun ChatBotScreen(
         },
         bottomBar = {
             messageSendCard(
-                value = inputText, // 👈 Use state from ViewModel
-                onValueChange = { chatBotViewModel.onInputTextChange(it) }, // 👈 Call ViewModel
-                onSendClick = { chatBotViewModel.sendMessage() } // 👈 Call ViewModel
+                value = inputText,
+                onValueChange = { chatBotViewModel.onInputTextChange(it) },
+                onSendClick = { chatBotViewModel.sendMessage() }
             )
         }
     ) { paddingValues ->
@@ -103,10 +103,9 @@ fun ChatBotScreen(
                 .padding(paddingValues),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            reverseLayout = true // 👈 This is correct for a chat
+            reverseLayout = true
         ) {
-            // 👈 **This is the key change:**
-            // We use the 'id' as a key for efficient updates
+
             items(items = messages, key = { it.id }) { message ->
                 messageCard(
                     message = message
