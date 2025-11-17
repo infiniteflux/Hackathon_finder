@@ -59,7 +59,7 @@ private fun preview() {
 @Composable
 fun ChatBotScreen(
     navController: NavController,
-    chatBotViewModel: ChatBotViewModel = viewModel() // 👈 Use default viewModel()
+    chatBotViewModel: ChatBotViewModel
 ) {
     // 👈 Get state from the ViewModel
     val messages by chatBotViewModel.messages.collectAsState()
@@ -106,7 +106,7 @@ fun ChatBotScreen(
             reverseLayout = true
         ) {
 
-            items(items = messages, key = { it.id }) { message ->
+            items(items = messages.reversed(), key = { it.id }) { message ->
                 messageCard(
                     message = message
                 )
