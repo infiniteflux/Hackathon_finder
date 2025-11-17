@@ -51,7 +51,6 @@ class ChatBotViewModel : ViewModel() {
 
     init {
         Log.d(TAG, "ChatBotViewModel initialized")
-        Log.d(TAG, "API Key present: ${apiKey.isNotEmpty()}")
 
         // Add a welcome message
         _messages.value = listOf(
@@ -128,7 +127,7 @@ class ChatBotViewModel : ViewModel() {
 
     private suspend fun callGeminiAPI(prompt: String): String = withContext(Dispatchers.IO) {
         // Use the v1 API endpoint with gemini-1.5-flash
-        val url = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=$apiKey"
+        val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=$apiKey"
 
         val jsonBody = JSONObject().apply {
             put("contents", JSONArray().apply {
