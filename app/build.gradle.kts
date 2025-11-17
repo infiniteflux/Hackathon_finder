@@ -89,5 +89,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
     // gemini
-    implementation("com.google.ai.client.generativeai:generativeai:0.6.0")
+     // implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 }
