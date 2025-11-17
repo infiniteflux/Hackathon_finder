@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items // 👈 Make sure to import this
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -40,18 +40,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.hackathon_finder.data.ChatMessage
 import com.example.hackathon_finder.viewModel.ChatBotViewModel
-import java.util.UUID // 👈 Import UUID for the ID
+
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-private fun preview() {
-    // 👈 Updated preview to use the ChatMessage data class
-    messageCard(
+private fun Preview() {
+    MessageCard(
         message = ChatMessage(text = "This is a user message", isFromUser = true)
     )
 }
@@ -61,7 +58,6 @@ fun ChatBotScreen(
     navController: NavController,
     chatBotViewModel: ChatBotViewModel
 ) {
-    // 👈 Get state from the ViewModel
     val messages by chatBotViewModel.messages.collectAsState()
     val inputText by chatBotViewModel.inputText.collectAsState()
 
@@ -90,7 +86,7 @@ fun ChatBotScreen(
             }
         },
         bottomBar = {
-            messageSendCard(
+            MessageSendCard(
                 value = inputText,
                 onValueChange = { chatBotViewModel.onInputTextChange(it) },
                 onSendClick = { chatBotViewModel.sendMessage() }
@@ -107,7 +103,7 @@ fun ChatBotScreen(
         ) {
 
             items(items = messages.reversed(), key = { it.id }) { message ->
-                messageCard(
+                MessageCard(
                     message = message
                 )
             }
@@ -116,8 +112,8 @@ fun ChatBotScreen(
 }
 
 @Composable
-fun messageCard(message: ChatMessage) { // 👈 Use ChatMessage object
-    val isFromCurrentUser = message.isFromUser // 👈 Get direction from the object
+fun MessageCard(message: ChatMessage) {
+    val isFromCurrentUser = message.isFromUser
     val alignment = if (isFromCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
     val backgroundColor =
         if (isFromCurrentUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
@@ -152,7 +148,7 @@ fun messageCard(message: ChatMessage) { // 👈 Use ChatMessage object
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 Text(
-                    text = message.text, // 👈 Use the actual message text
+                    text = message.text,
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -161,14 +157,14 @@ fun messageCard(message: ChatMessage) { // 👈 Use ChatMessage object
 }
 
 @Composable
-fun messageSendCard(value: String, onValueChange: (String) -> Unit, onSendClick: () -> Unit) {
+fun MessageSendCard(value: String, onValueChange: (String) -> Unit, onSendClick: () -> Unit) {
     Surface(tonalElevation = 4.dp) {
         OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp), // 👈 Added padding
+                .padding(horizontal = 8.dp, vertical = 8.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface // 👈 Use surface color
+                containerColor = MaterialTheme.colorScheme.surface
             ),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
             elevation = CardDefaults.cardElevation(
@@ -179,7 +175,7 @@ fun messageSendCard(value: String, onValueChange: (String) -> Unit, onSendClick:
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 15.dp, vertical = 4.dp), // 👈 Adjusted padding
+                    .padding(horizontal = 15.dp, vertical = 4.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Row(
