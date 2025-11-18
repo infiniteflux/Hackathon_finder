@@ -90,8 +90,6 @@ This ensures the bot remains focused, productive, and hackathon-oriented.
 
 ## 📸 Screenshots
 
-## 📸 Screenshots
-
 | Home | Search | Favorites | Chatbot |
 |:---:|:---:|:---:|:---:|
 | <img src="screenshot/home.jpg" width="200"/> | <img src="screenshot/search.jpg" width="200"/> | <img src="screenshot/fav.jpg" width="200"/> | <img src="screenshot/chatbot.jpg" width="200"/> |
