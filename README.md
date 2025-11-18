@@ -89,16 +89,17 @@ This ensures the bot remains focused, productive, and hackathon-oriented.
 ---
 
 ## 📸 Screenshots
+(screenshot/home.png)
 
-(Add your screenshots below)
+### search Interface
+(screenshot/search.png)
 
-### Chat Interface
 
-*Screenshot goes here*
+### fav Interface
+(screenshot/fav.png)
 
-### Bot Response
-
-*Screenshot goes here*
+### fav Interface
+(screenshot/chatbot.png)
 
 ---
 
