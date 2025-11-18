@@ -99,7 +99,7 @@ This ensures the bot remains focused, productive, and hackathon-oriented.
 (screenshot/fav.jpg)
 
 ### fav Interface
-(screenshot/chatbot.jpg)
+screenshot/chatbot.jpg
 
 ---
 
