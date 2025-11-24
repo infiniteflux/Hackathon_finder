@@ -99,7 +99,7 @@ fun SearchHackathon(
                 value = topic,
                 onValueChange = { topic = it },
                 label = "Hackathon Topic (e.g., AI, Health)",
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
             )
             Spacer(modifier = Modifier.height(8.dp))
             HackathonTextField(
@@ -201,6 +201,15 @@ private fun HackathonTextField(
         keyboardOptions = KeyboardOptions(imeAction = imeAction),
         keyboardActions = KeyboardActions(
             onSearch = { onSearch() }
+        ),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = Color.DarkGray
         )
     )
 }
@@ -227,7 +236,7 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel:
                     text = hackathon.name,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color.Black,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -263,7 +272,8 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel:
                 text = hackathon.description,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 3,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = Color.Black,
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -272,13 +282,13 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel:
                     Icons.Default.Computer
                 else
                     Icons.Default.LocationOn,
-                text = "${hackathon.mode} - ${hackathon.location}"
+                text = "${hackathon.mode} - ${hackathon.location}",
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             InfoRow(
                 icon = Icons.Default.CalendarMonth,
-                text = "${hackathon.startDate} to ${hackathon.endDate}"
+                text = "${hackathon.startDate} to ${hackathon.endDate}",
             )
             Spacer(modifier = Modifier.height(8.dp))
             InfoRow(
@@ -295,7 +305,7 @@ fun HackathonCard(hackathon: Hackathon, onClick: () -> Unit, favouriteViewModel:
                 ) {
                     Text(
                         text = "View Website",
-                        color = MaterialTheme.colorScheme.primary,
+                        color = Color.Black,
                         fontWeight = FontWeight.SemiBold
                     )
                     Icon(
@@ -323,7 +333,8 @@ fun InfoRow(icon: ImageVector, text: String) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Black,
         )
     }
 }
