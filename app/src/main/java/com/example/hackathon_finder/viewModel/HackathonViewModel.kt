@@ -100,7 +100,7 @@ class HackathonViewModel : ViewModel() {
 
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        val queryParts = mutableListOf<String>("upcoming hackathons")
+        val queryParts = mutableListOf("upcoming hackathons")
         if (topic.isNotBlank()) queryParts.add(topic)
         if (technology.isNotBlank()) queryParts.add(technology)
         if (country.isNotBlank()) {
@@ -148,7 +148,7 @@ class HackathonViewModel : ViewModel() {
     }
 
     private fun createRequest(apiKey: String, requestBody: String): Request {
-        val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=$apiKey"
+        val url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$apiKey"
         return Request.Builder()
             .url(url)
             .addHeader("Content-Type", "application/json")
