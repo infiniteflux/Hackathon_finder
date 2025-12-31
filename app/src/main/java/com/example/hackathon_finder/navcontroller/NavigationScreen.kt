@@ -56,7 +56,6 @@ fun NavigationScreen(modifier: Modifier = Modifier,
                     val encodedUrl = backStackEntry.arguments?.getString(AppRoutes.WEBVIEW_URL_ARG)
                     HackathonWebViewScreen(
                         encodedUrl = encodedUrl,
-                        onBack = { navController.popBackStack() },
                         navController = navController
                     )
                 }

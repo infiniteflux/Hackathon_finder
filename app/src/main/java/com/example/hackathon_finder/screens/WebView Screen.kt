@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun HackathonWebViewScreen(
     encodedUrl: String?,
-    onBack: () -> Unit,
     navController: NavController
 ) {
     var isLoading by remember { mutableStateOf(true) }
@@ -59,7 +58,7 @@ fun HackathonWebViewScreen(
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = { navController.navigateUp() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back",
