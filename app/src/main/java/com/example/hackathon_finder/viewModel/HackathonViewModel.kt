@@ -204,7 +204,7 @@ class HackathonViewModel : ViewModel() {
             }
 
             hackathons
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw Exception("Failed to parse AI's JSON response. Raw: $responseBody")
         }
     }

@@ -167,7 +167,7 @@ fun SearchHackathon(
                             }
                         }
                     }
-                    !uiState.isLoading && uiState.error == null -> {
+                    true -> {
                         Text(
                             text = "Enter your criteria and tap 'Search' to find hackathons.",
                             color = Color.Gray,
