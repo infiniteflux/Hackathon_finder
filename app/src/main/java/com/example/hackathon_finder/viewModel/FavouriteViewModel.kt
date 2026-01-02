@@ -47,12 +47,12 @@ class FavouriteViewModel: ViewModel(){
                 println("Details of hackathon is successfully deleted")
                 loadFavourites()
             }
-            .addOnFailureListener { e->
+            .addOnFailureListener { _->
                 println("error: $(e.message)")
             }
     }
 
-    // function to check hackathon is already save or not
+    // function to check hackathon is already save or not.
     fun isHackathonExist(
         hackathon: Hackathon,
         onResult:(Boolean) -> Unit
